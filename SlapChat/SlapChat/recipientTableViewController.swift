@@ -1,24 +1,21 @@
 //
-//  TableViewController.swift
+//  recipientTableViewController.swift
 //  SlapChat
 //
-//  Created by Flatiron School on 7/18/16.
+//  Created by Colin Walsh on 7/21/16.
 //  Copyright © 2016 Flatiron School. All rights reserved.
 //
 
 import UIKit
 
-class TableViewController: UITableViewController {
-
-    var messages: Set<Message> = []
-    var managedMessageObjects: [Message] = []
+class recipientTableViewController: UITableViewController {
+    
     let store: DataStore = DataStore()
+    var managedRecepientObjects = Recipient()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //store.fetchData()
-        
         
         store.fetchData()
         // Uncomment the following line to preserve selection between presentations
@@ -26,17 +23,13 @@ class TableViewController: UITableViewController {
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
-        
-        
     }
     
     override func viewWillAppear(animated: Bool) {
-        
         super.viewWillAppear(true)
         
         store.fetchData()
-    
+        
         tableView.reloadData()
         
     }
@@ -49,24 +42,40 @@ class TableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return messages.count
+        return self.store.recipients.count
     }
     
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCellWithIdentifier("basicCell", forIndexPath: indexPath)
         
-        let messagesArray = Array(messages)
+        // Configure the cell...
         
-        let eachMessage = messagesArray[indexPath.row]
+        let getRecipient = self.store.recipients[indexPath.row]
         
-        cell.textLabel?.text = eachMessage.content
+        cell.textLabel?.text = getRecipient.name
         
         return cell
     }
+    
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let indexPath = tableView.indexPathForSelectedRow
+        
+        let selectedRecipient = store.recipients[indexPath!.row]
+        
+        let destinationVC = segue.destinationViewController as! TableViewController
+        
+        if let messageSet = selectedRecipient.messages{
+            destinationVC.messages = messageSet}
+    }
+    
+    
+    
 }

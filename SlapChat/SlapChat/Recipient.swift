@@ -1,5 +1,5 @@
 //
-//  Message.swift
+//  Recipient.swift
 //  SlapChat
 //
 //  Created by Colin Walsh on 7/21/16.
@@ -10,11 +10,8 @@ import Foundation
 import CoreData
 
 
-class Message: NSManagedObject {
+class Recipient: NSManagedObject {
 
 // Insert code here to add functionality to your managed object subclass
-    
-    static let entityName = "Message"
-    static let sortKey = "createdAt"
 
 }
